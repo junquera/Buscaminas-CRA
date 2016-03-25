@@ -1,0 +1,156 @@
+% library(win_menu) compiled into win_menu 0.00 sec, 30 clauses
+Welcome to SWI-Prolog (Multi-threaded, 32 bits, Version 6.0.2)
+Copyright (c) 1990-2011 University of Amsterdam, VU Amsterdam
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+Please visit http://www.swi-prolog.org for details.
+
+For help, use ?- help(Topic). or ?- apropos(Word).
+
+1 ?- consult('C:/Documents and Settings/josee.morais/workspace/buscaminas/src/buscaminas.pl').
+% C:/Documents and Settings/josee.morais/workspace/buscaminas/src/buscaminas.pl compiled 0.02 sec, 61 clauses
+true.
+
+3 ?- jugar.
+
+Elija el tamaño del tablero y el número de bombas. No se olvide de escribir cada número seguido de un punto.
+
+Número de filas (entre 9 y 24): 10.
+
+Número de columnas (entre 9 y 30): 10.
+
+Número de bombas (entre 10 y 81): 15.
+
+Este es el tablero inicial:
+
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+
+
+Pinche sobre una posición del tablero. Recuerde escribir un punto tras cada número.
+
+Fila: 1.
+   Columna: 1.
+   
+Así queda su tablero: 
+
+---------------------
+| | | |1|x|x|x|x|x|x|
+---------------------
+| | | |1|x|x|x|x|x|x|
+---------------------
+| | |1|2|x|x|x|x|x|x|
+---------------------
+| | |1|x|x|x|x|x|x|x|
+---------------------
+|1|1|2|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+
+
+Pinche sobre una posición del tablero. Recuerde escribir un punto tras cada número.
+
+Fila: 3.
+   Columna: 5.
+   
+Así queda su tablero: 
+
+---------------------
+| | | |1|x|x|x|x|x|x|
+---------------------
+| | | |1|x|x|x|x|x|x|
+---------------------
+| | |1|2|2|x|x|x|x|x|
+---------------------
+| | |1|x|x|x|x|x|x|x|
+---------------------
+|1|1|2|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+
+
+Pinche sobre una posición del tablero. Recuerde escribir un punto tras cada número.
+
+Fila: 15.
+Fila: 1.
+   Columna: 5.
+   
+Así queda su tablero: 
+
+---------------------
+| | | |1|1|x|x|x|x|x|
+---------------------
+| | | |1|x|x|x|x|x|x|
+---------------------
+| | |1|2|2|x|x|x|x|x|
+---------------------
+| | |1|x|x|x|x|x|x|x|
+---------------------
+|1|1|2|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+|x|x|x|x|x|x|x|x|x|x|
+---------------------
+
+
+Pinche sobre una posición del tablero. Recuerde escribir un punto tras cada número.
+
+Fila: 2.
+   Columna: 2.
+   Ha pinchado una posición ya descubierta. Vuelva a intentarlo
+
+Pinche sobre una posición del tablero. Recuerde escribir un punto tras cada número.
+
+Fila: 2.
+   Columna: 5.
+   
+
+¡¡¡¡¡BOOOOOOOOOMBAAAAAAAAA!!!!! El juego ha terminado.
+true 
+.
+
+4 ?- 
