@@ -19,7 +19,7 @@ cambiarAlrededor(Tablero, Indice, ListaAux, X, Y, Limite):-
      modificar_posicion_recursiva(Tablero, Indice, ListaAux, X, Y, Limite).
 
 %Modifica la casilla y para ya que no esta vacia si no se ha revelado
-% TODO set_norte, sur, este, oeste...
+% IDEA set_norte, sur, este, oeste...
 cambiarAlrededor(Tablero, Indice, ListaAux, X, Y, Limite):-
      Indice is X*Y,
      Indice =< Limite,
