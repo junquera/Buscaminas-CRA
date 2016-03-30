@@ -1,21 +1,3 @@
-/* N <- Ancho; M <- Alto; B <- Bombas */
-generar_tablero_oculto(N, M, B, Tablero_oculto):-
-    D is N * M, genera_tablero(D, Tablero),
-    set_bombs(Tablero, D, B, Tablero_bombas),
-    set_bomb_advert(Tablero_bombas, N, D, Tablero_oculto).
-
-set_bomb_advert(T, N, D, T1):-
-    set_bomb_advert_aux(T, T, 0, N, D, T1).
-set_bomb_advert_aux([],_,_,_,_,[]).
-set_bomb_advert_aux(['#'|T], TO, X, N, D, ['#'|T1]):-
-    set_bomb_advert_aux(T, TO, X + 1, N, D, T1).
-set_bomb_advert_aux([_|T], TO, X, N, D, [V|T1]):-
-    vecinos_bomba(TO, X, N, D, V),
-    set_bomb_advert_aux(T, TO, X + 1, N, D, T1).
-vecinos_bomba(T, X, N, D, V):-
-    get_vecinos(T, X, N, D, R),
-    cuenta_bombas(R, V).
-
 imprime_tablero(T,N):- imprime_tablero_aux(T, N, 0, 0).
 imprime_tablero_aux([],N,_,_):- nl, imprime_barra_horiz(N).
 % I <- Iteración; 0 <- Es o no final de linea?
@@ -41,43 +23,19 @@ imprime_barra_horiz_aux(N):-
     N1 is N - 1,
     imprime_barra_horiz_aux(N1).
 
-quita_cabeza([_|Z], Z).
-
 genera_tablero(D, Tablero):-
     genera_tablero_aux(D, [], Tablero).
 
 genera_tablero_aux(0,Z,Z).
 genera_tablero_aux(N, Z, Tablero):-
     N1 is N-1,
-    genera_tablero_aux(N1, [0 | Z], Tablero).
-
-set_bombs(T, D, B, TB):-
-    set_bombs_aux(T, D, B, 0, TB).
-set_bombs_aux(T, _, B, B, T).
-set_bombs_aux(T, D, B, _, TB):-
-    random(0, D, X),
-    set_bomb(T, X, T1),
-    cuenta_bombas(T1, B1),
-    set_bombs_aux(T1, D, B, B1, TB).
-
-cuenta_bombas([], 0).
-cuenta_bombas([0|T], B):-
-    cuenta_bombas(T, B).
-cuenta_bombas(['#'|T], B):-
-    cuenta_bombas(T, B1),
-    succ(B1, B).
-
-set_bomb(T, P, T1):- set_posicion(T, P, '#', T1).
-set_posicion([_|T], 0, E, [E|T]).
-% P <- Posición
-set_posicion([H|T], P, E, [H|Result1]):-
-    P1 is P - 1,
-    set_posicion(T, P1, E, Result1).
+    genera_tablero_aux(N1, ['X'|Z], Tablero).
 
 get_posicion([H|_], 0, H).
 get_posicion([_|T], X, V):-
     X1 is X - 1,
     get_posicion(T, X1, V).
+
 
 % T <- Tablero; X <- Posicion; N <- Ancho; V <- Resultado
 get_norte(T, X, N, V):-
@@ -146,3 +104,11 @@ get_vecinos(T, X, A, D, [N, NE, E, SE, S, SO, O, NO]):-
     get_suroeste(T, X, A, D, SO),
     get_oeste(T, X, A, O),
     get_noroeste(T, X, A, NO).
+
+set_posicion([_|T], 0, E, [E|T]).
+% P <- Posición
+set_posicion([H|T], P, E, [H|Result1]):-
+    P1 is P - 1,
+    set_posicion(T, P1, E, Result1).
+
+% TODO set_vecinos

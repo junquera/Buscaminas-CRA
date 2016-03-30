@@ -1,3 +1,7 @@
+:-[ tablero_oculto,
+    tablero_jugador,
+    juego].
+
 leer_filas(N):- repeat,
                 write('Numero de filas (entre 9 y 24): '),
                 read(N),
@@ -26,6 +30,9 @@ jugar:- write('Elija el tamaño del tablero y el número de bombas. No se olvide
         leer_columnas(M), nl,
         N1 is (N-1)*(M-1),
         leer_bombas(N1, R), nl,
-      %  generar_tablero_jugador,Inicial(N,M,Tablero_jugador),
+        generar_tablero_jugador(N, M, Tablero_jugador),
         generar_tablero_oculto(N, M, R, Tablero_oculto),
+        imprime_tablero(Tablero_jugador, N),
         imprime_tablero(Tablero_oculto, N).
+        %Contador is (N*M) - R,
+        %jugando(N, M, Contador, Tablero, Tablero_oculto).
