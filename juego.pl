@@ -46,11 +46,11 @@ comprueba_valor_oculto('#'):-
     halt.
 comprueba_valor_oculto(_).
 
-/*set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, 0, T1):-
+set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, 0, T1):-
     set_posicion(Tablero, Indice, ' ', T0),
     modificar_posicion_recursiva(T0, Tablero_oculto, X, Y, N, M, T1).
 set_cambio(Tablero, _, _, _, _, _, Indice, Elemento, T1):-
-    set_posicion(Tablero, Indice, Elemento, T1).*/
+    set_posicion(Tablero, Indice, Elemento, T1).
 cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, T1):-
     X >=0,
     X < N,
@@ -60,8 +60,10 @@ cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, T1):-
     Indice =< N * M,
     get_posicion(Tablero_oculto, Indice, Elemento),
     integer(Elemento),
-    /*set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, Elemento, T1).*/
-    set_posicion(Tablero, Indice, Elemento, T1).
+    get_posicion(Tablero, Indice, Eaux),
+    Eaux \= ' ',
+    Eaux \= 0,
+    set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, Elemento, T1).
 cambiarAlrededor(T, _, _, _, _, _, T):-!.
 
 modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1):-
