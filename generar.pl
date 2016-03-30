@@ -68,12 +68,12 @@ cuenta_bombas(['#'|T], B):-
     cuenta_bombas(T, B1),
     succ(B1, B).
 
-set_bomb([_|T], 0, ['#'|T]).
+set_bomb(T, P, T1):- set_posicion(T, P, '#', T1).
+set_posicion([_|T], 0, E, [E|T]).
 % P <- Posición
-set_bomb([H|T], P, Result):-
+set_posicion([H|T], P, E, [H|Result1]):-
     P1 is P - 1,
-    set_bomb(T, P1, Result1),
-    Result = [H|Result1].
+    set_posicion(T, P1, E, Result1).
 
 get_posicion([H|T], 0, H).
 get_posicion([_|T], X, V):-
