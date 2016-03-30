@@ -19,7 +19,7 @@ leer_columna(X, M):- repeat,
 jugando(Tablero, Tablero_oculto, N, M):-
     nl, write('Asi queda su tablero:'), nl,
     imprime_tablero(Tablero, N),
-    imprime_tablero(Tablero_oculto, N),
+%   imprime_tablero(Tablero_oculto, N),
     repeat,
     nl, write('Elija una posicion del tablero. Recuerde escribir un punto tras cada numero.'), nl,
     leer_columna(X, M),
@@ -28,6 +28,7 @@ jugando(Tablero, Tablero_oculto, N, M):-
     !,
     modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1),
     jugando(T1, Tablero_oculto, N, M).
+
 
 comprueba(Tablero, Tablero_oculto, X, Y, N):-
     Posicion is X + Y * N,
