@@ -1,5 +1,5 @@
 imprime_tablero(T,N):- imprime_tablero_aux(T, N, 0, 0).
-imprime_tablero_aux([],N,_,_):- nl, imprime_barra_horiz(N).
+imprime_tablero_aux([],N,_,_):- nl, imprime_barra_horiz(N), nl.
 % I <- Iteración; 0 <- Es o no final de linea?
 imprime_tablero_aux([H|T],N, I, 0) :-
     nl, imprime_barra_horiz(N),
@@ -31,7 +31,7 @@ genera_tablero_aux(N, Z, Tablero):-
     N1 is N-1,
     genera_tablero_aux(N1, ['X'|Z], Tablero).
 
-get_posicion([H|_], 0, H).
+get_posicion([H|_], 0, H):-!.
 get_posicion([_|T], X, V):-
     X1 is X - 1,
     get_posicion(T, X1, V).
@@ -110,5 +110,3 @@ set_posicion([_|T], 0, E, [E|T]).
 set_posicion([H|T], P, E, [H|Result1]):-
     P1 is P - 1,
     set_posicion(T, P1, E, Result1).
-
-% TODO set_vecinos

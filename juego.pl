@@ -1,43 +1,83 @@
 :-[metodos_auxiliares].
-%Comprobar si la posici�n escogida no se encuentra repetida
-comprobar_posicion(Tablero, X, Y, _):-
-      Indice is X*Y,
-      get_posicion(Tablero, Indice, Elemento),
-      Elemento == 'X'.
 
-%Comprueba si la posicion no se ha escogido todavia
-comprobar_posicion(Tablero, X, Y, Tablero_oculto):-
-      Indice is X*Y,
-      get_posicion(Tablero, Indice, Elemento),
-      write('Ha pinchado una posici�n ya descubierta. Vuelva a intentarlo'),nl,
-      seleccionar(N, M, R, Tablero).
-%Comprueba si la columna o la fila estan fuera de sus limites
-leer_columna(M, X):- repeat,
-                    write('Fila: '),
-                    read(X),
-                    integer(X),
-                    X >= 9,
-                    X =< M,
-                    !.
-leer_columna(_, _):- write('Ha pinchado una posici�n ya descubierta. Vuelva a intentarlo'),
-          leer_columna(_, _).
-
-leer_fila(N, Y):- repeat,
-                write('Columna: '),
+leer_fila(Y, N):- repeat,
+                write('Fila: '),
                 read(Y),
                 integer(Y),
-                Y >= 9,
-                Y =< N,
+                Y >= 0,
+                Y < N,
                 !.
-leer_fila(_, _):- write('Ha pinchado una posici�n ya descubierta. Vuelva a intentarlo'),
-          leer_fila(_, _).
 
-seleccionar(N, M, Contador, Tablero, Tablero_oculto):- write('Pinche sobre una posici�n del tablero. Recuerde escribir un punto tras cada n�mero.'), nl,
-     leer_fila(N, Y), nl,
-     leer_columna(M, X), nl,
-     Limite is N*M,
-     comprobar_posicion(Tablero, X, Y, Tablero_oculto),
-     modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux),
-     continuar_partida(Tablero, X, Y, Tablero_oculto, N, M, Limite, Contador, ListaAux).
+leer_columna(X, M):- repeat,
+                    write('Columna: '),
+                    read(X),
+                    integer(X),
+                    X >= 0,
+                    X < M,
+                    !.
 
-jugando(N, M, Contador, Tablero, Tablero_oculto):- seleccionar(N, M, Contador, Tablero, Tablero_oculto).
+jugando(Tablero, Tablero_oculto, N, M):-
+    nl, write('Asi queda su tablero:'), nl,
+    imprime_tablero(Tablero, N),
+    imprime_tablero(Tablero_oculto, N),
+    repeat,
+    nl, write('Elija una posicion del tablero. Recuerde escribir un punto tras cada numero.'), nl,
+    leer_columna(X, M),
+    leer_fila(Y, N),
+    comprueba(Tablero, Tablero_oculto, X, Y, N),
+    !,
+    modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1),
+    jugando(T1, Tablero_oculto, N, M).
+
+comprueba(Tablero, Tablero_oculto, X, Y, N):-
+    Posicion is X + Y * N,
+    get_posicion(Tablero, Posicion, Valor),
+    get_posicion(Tablero_oculto, Posicion, Valor_oculto),
+    comprueba_valor(Valor),
+    comprueba_valor_oculto(Valor_oculto).
+
+comprueba_valor('X').
+comprueba_valor(_):-
+    write('Valor repetido'),
+    false.
+
+comprueba_valor_oculto('#'):-
+    write('Bomba!'), nl,
+    halt.
+comprueba_valor_oculto(_).
+
+/*set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, 0, T1):-
+    set_posicion(Tablero, Indice, ' ', T0),
+    modificar_posicion_recursiva(T0, Tablero_oculto, X, Y, N, M, T1).
+set_cambio(Tablero, _, _, _, _, _, Indice, Elemento, T1):-
+    set_posicion(Tablero, Indice, Elemento, T1).*/
+cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, T1):-
+    X >=0,
+    X < N,
+    Y >=0,
+    Y < M,
+    Indice is X + N * Y,
+    Indice =< N * M,
+    get_posicion(Tablero_oculto, Indice, Elemento),
+    integer(Elemento),
+    /*set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, Elemento, T1).*/
+    set_posicion(Tablero, Indice, Elemento, T1).
+cambiarAlrededor(T, _, _, _, _, _, T):-!.
+
+modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1):-
+    cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, Tx),
+    cambiarAlrededor(Tx, Tablero_oculto, X, Y + 1, N, M, Tx0),
+    cambiarAlrededor(Tx0, Tablero_oculto, X + 1, Y + 1, N, M, Tx1),
+    cambiarAlrededor(Tx1, Tablero_oculto, X, Y - 1, N, M, Tx2),
+    cambiarAlrededor(Tx2, Tablero_oculto, X - 1, Y + 1, N, M, Tx3),
+    cambiarAlrededor(Tx3, Tablero_oculto, X +1, Y - 1, N, M, Tx4),
+    cambiarAlrededor(Tx4, Tablero_oculto, X - 1, Y, N, M, Tx5),
+    cambiarAlrededor(Tx5, Tablero_oculto, X + 1, Y, N, M, Tx6),
+    cambiarAlrededor(Tx6, Tablero_oculto, X - 1, Y - 1, N, M, Tx7),
+    limpia_ceros(Tx7, T1).
+
+limpia_ceros([],_).
+limpia_ceros([0|T], [' '|T1]):-
+    limpia_ceros(T, T1).
+limpia_ceros([H|T], [H|T1]):-
+    limpia_ceros(T, T1).
