@@ -34,5 +34,5 @@ jugar:- write('Elija el tamaño del tablero y el número de bombas. No se olvide
         generar_tablero_oculto(N, M, R, Tablero_oculto),
         imprime_tablero(Tablero_jugador, N),
         imprime_tablero(Tablero_oculto, N).
-        %Contador is (N*M) - R,
-        %jugando(N, M, Contador, Tablero, Tablero_oculto).
+        Contador is (N*M) - R,
+        jugando(N, M, Contador, Tablero, Tablero_oculto).

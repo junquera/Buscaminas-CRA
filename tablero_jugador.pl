@@ -5,29 +5,14 @@ generar_tablero_jugador(N, M, Tablero):-
     D is N * M, genera_tablero(D, Tablero).
 
 %--------------------------------------------------------------------------------------------------------------------------------
-%Devuelve el elemento en la posicion escogida
-/* TODO CAMBIAR POR get_posicion */
-posicion([Elemento|_], Elemento, 0).
-posicion([_|Tail], Elemento, Indice):-
-      Indice is Indice1-1,
-      posicion(Tail, Elemento, Indice1).
-
-%--------------------------------------------------------------------------------------------------------------------------------
-%Modifica el tablero del jugador en funci�n de la casilla
-/* TODO CAMBIAR POR set_posicion */
-modificar_posicion(E, [_|T], 0, [E|T]).
-% P <- Posici�n
-modificar_posicion(E, [H|T], P, [H|Result1]):-
-    P1 is P - 1,
-    modificar_posicion(T, P1, E, Result1).
 
 %Modifica la casilla y llama a cambiar alrededor si no se ha revelado
 cambiarAlrededor(Tablero, Indice, ListaAux, X, Y, Limite):-
      Indice is X*Y,
      Indice =< Limite,
-     posicion(Tablero, Elemento, Indice),%Comprueba si es una X, si no, que pare
+     get_posicion(Tablero, Indice, Elemento),%Comprueba si es una X, si no, que pare
      Elemento == 'X',
-     posicion(Tablero_oculto, Elemento, Indice),
+     get_posicion(Tablero_oculto, Indice, Elemento),
      integer(Elemento),
      Elemento == 0,
      cambiar(Tablero, X, Y, ' ', ListaAux),
@@ -38,11 +23,11 @@ cambiarAlrededor(Tablero, Indice, ListaAux, X, Y, Limite):-
 cambiarAlrededor(Tablero, Indice, ListaAux, X, Y, Limite):-
      Indice is X*Y,
      Indice =< Limite,
-     posicion(Tablero, Elemento, Indice),%Comprueba si es una X, si no, que pare
+     get_posicion(Tablero,Indice, Elemento),%Comprueba si es una X, si no, que pare
      Elemento == 'X',
-     posicion(Tablero_oculto, Elemento, Indice),
-     integer(Elemento),
-     Elemento > 0,
+     get_posicion(Tablero_oculto, Indice, Elemento1),
+     integer(Elemento1),
+     Elemento1 > 0,
      cambiar(Tablero, X, Y, Elemento, ListaAux).
 
 %Llama a modificar alrededor para cambiar los valores alrededor si es posible
@@ -60,19 +45,19 @@ modificar_posicion_recursiva(Tablero, Indice, ListaAux7, X, Y, Limite):-
 cambiar(Tablero, X, Y, Elemento, Limite, ListaAux1):-
       Elemento == 0,
       Indice is X*Y,
-      modificar_posicion(' ', Tablero, Indice, ListaAux),
+      set_posicion(' ', Tablero, Indice, ListaAux),
       modificar_posicion_recursiva(ListaAux, Indice, ListaAux1, X, Y, Limite).
 
 cambiar(Tablero, X, Y, Elemento, Limite, ListaAux):-
       integer(Elemento),
       Elemento > 0,
       Indice is X*Y,
-      modificar_posicion(Elemento, Tablero, Indice, ListaAux).
+      modificar_posicion(Tablero, Indice, Elemento, ListaAux).
 %--------------------------------------------------------------------------------------------------------------------------------
 %En funci�n de la casilla, decide que realizar
 modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux):-
       Indice is X*Y,
-      posicion(Tablero_oculto, Elemento, Indice),
+      get_posicion(Tablero_oculto, Indice, Elemento),
       integer(Elemento),
       Elemento == 0,
       Contador is Contador -1;
@@ -80,7 +65,7 @@ modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux):-
 
 modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux):-
       Indice is X*Y,
-      posicion(Tablero_oculto, Elemento, Indice),
+      get_posicion(Tablero_oculto, Indice, Elemento),
       integer(Elemento),
       Elemento > 0,
       Contador is Contador - 1,
@@ -88,7 +73,7 @@ modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux):-
 
 modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux):-
       Indice is X*Y,
-      posicion(Tablero_oculto, Elemento, Indice),
+      get_posicion(Tablero_oculto, Indice, Elemento),
       Elemento = '#',
       Contador = -1,
       write('�����BOOOOOOOOOMBAAAAAAAAA!!!!! El juego ha terminado.').
@@ -97,7 +82,7 @@ modificar_tablero(Tablero, X, Y, Tablero_oculto, Limite, Contador, ListaAux):-
 continuar_partida(Tablero, X, Y, Tablero_oculto, N, M, Limite, Contador, ListaAux):-
   Contador > 0,
   write('Asi queda su tablero:'), nl,
-  generar_tablero_jugador(N,M,ListaAux),    % TODO Esto sería imprimir
+  imprime_tablero(ListaAux, N),
   seleccionar(N, M, R, ListaAux, Contador).
 
 continuar_partida(Tablero, X, Y, Tablero_oculto, N, M, Limite, 0, ListaAux):-
