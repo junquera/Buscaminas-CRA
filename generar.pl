@@ -1,6 +1,5 @@
-% Ver si esto nos puede servir: http://blog.ivank.net/prolog-matrices.html
-    /* N <- Ancho; M <- Alto; B <- Bombas */
-genera_tablero_oculto(N, M, B, Tablero_oculto):-
+/* N <- Ancho; M <- Alto; B <- Bombas */
+generar_tablero_oculto(N, M, B, Tablero_oculto):-
     D is N * M, genera_tablero(D, Tablero),
     set_bombs(Tablero, D, B, Tablero_bombas),
     set_bomb_advert(Tablero_bombas, N, D, Tablero_oculto).
@@ -10,7 +9,7 @@ set_bomb_advert(T, N, D, T1):-
 set_bomb_advert_aux([],_,_,_,_,[]).
 set_bomb_advert_aux(['#'|T], TO, X, N, D, ['#'|T1]):-
     set_bomb_advert_aux(T, TO, X + 1, N, D, T1).
-set_bomb_advert_aux([H|T], TO, X, N, D, [V|T1]):-
+set_bomb_advert_aux([_|T], TO, X, N, D, [V|T1]):-
     vecinos_bomba(TO, X, N, D, V),
     set_bomb_advert_aux(T, TO, X + 1, N, D, T1).
 vecinos_bomba(T, X, N, D, V):-
@@ -55,7 +54,7 @@ genera_tablero_aux(N, Z, Tablero):-
 set_bombs(T, D, B, TB):-
     set_bombs_aux(T, D, B, 0, TB).
 set_bombs_aux(T, _, B, B, T).
-set_bombs_aux(T, D, B, B0, TB):-
+set_bombs_aux(T, D, B, _, TB):-
     random(0, D, X),
     set_bomb(T, X, T1),
     cuenta_bombas(T1, B1),
@@ -75,7 +74,7 @@ set_posicion([H|T], P, E, [H|Result1]):-
     P1 is P - 1,
     set_posicion(T, P1, E, Result1).
 
-get_posicion([H|T], 0, H).
+get_posicion([H|_], 0, H).
 get_posicion([_|T], X, V):-
     X1 is X - 1,
     get_posicion(T, X1, V).
@@ -85,7 +84,7 @@ get_norte(T, X, N, V):-
     X1 is X - N,
     X1 > 0,
     get_posicion(T, X1, V).
-get_norte(T, X, N, V):- !, V is 0.
+get_norte(_, _, _, V):- !, V is 0.
 
 get_noreste(T, X, N, V):-
     X0 is X - N,
@@ -93,19 +92,19 @@ get_noreste(T, X, N, V):-
     X1 is X0 + 1,
     (X1 mod N) > (X0 mod N),
     get_posicion(T, X1, V).
-get_noreste(T, X, N, V):- !, V is 0.
+get_noreste(_, _, _, V):- !, V is 0.
 
 get_este(T, X, N, V):-
     X1 is X + 1,
     (X1 mod N) > (X mod N),
     get_posicion(T, X1, V).
-get_este(T, X, N, V):- !, V is 0.
+get_este(_, _, _, V):- !, V is 0.
 
 get_sur(T, X, N, D, V):-
     X1 is X + N,
     X1 < D,
     get_posicion(T, X1, V).
-get_sur(T, X, N, D, V):- !, V is 0.
+get_sur(_, _, _, _, V):- !, V is 0.
 
 get_sureste(T, X, N, D, V):-
     X0 is X + N,
@@ -113,7 +112,7 @@ get_sureste(T, X, N, D, V):-
     X1 is X0 + 1,
     (X1 mod N) > (X0 mod N),
     get_posicion(T, X1, V).
-get_sureste(T, X, N, D, V):- !, V is 0.
+get_sureste(_, _, _, _, V):- !, V is 0.
 
 get_suroeste(T, X, N, D, V):-
     X0 is X + N,
@@ -121,13 +120,13 @@ get_suroeste(T, X, N, D, V):-
     X1 is X0 - 1,
     (X1 mod N) < (X0 mod N),
     get_posicion(T, X1, V).
-get_suroeste(T, X, N, D, V):- !, V is 0.
+get_suroeste(_, _, _, _, V):- !, V is 0.
 
 get_oeste(T, X, N, V):-
     X1 is X - 1,
     (X1 mod N) < (X mod N),
     get_posicion(T, X1, V).
-get_oeste(T, X, N, V):- !, V is 0.
+get_oeste(_, _, _, V):- !, V is 0.
 
 get_noroeste(T, X, N, V):-
     X0 is X - N,
@@ -135,7 +134,7 @@ get_noroeste(T, X, N, V):-
     X1 is X0 - 1,
     (X1 mod N) < (X0 mod N),
     get_posicion(T, X1, V).
-get_noroeste(T, X, N, V):- !, V is 0.
+get_noroeste(_, _, _, V):- !, V is 0.
 
 % T <- Tablero; X <- Posicion, N <- Ancho, V <- Vecinos
 get_vecinos(T, X, A, D, [N, NE, E, SE, S, SO, O, NO]):-
