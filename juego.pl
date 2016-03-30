@@ -1,13 +1,14 @@
+:-[metodos_auxiliares].
 %Comprobar si la posici�n escogida no se encuentra repetida
 comprobar_posicion(Tablero, X, Y, _):-
       Indice is X*Y,
-      posicion(Tablero, Elemento, Indice),
+      get_posicion(Tablero, Indice, Elemento),
       Elemento == 'X'.
 
 %Comprueba si la posicion no se ha escogido todavia
 comprobar_posicion(Tablero, X, Y, Tablero_oculto):-
       Indice is X*Y,
-      posicion(Tablero, Elemento, Indice),
+      get_posicion(Tablero, Indice, Elemento),
       write('Ha pinchado una posici�n ya descubierta. Vuelva a intentarlo'),nl,
       seleccionar(N, M, R, Tablero).
 %Comprueba si la columna o la fila estan fuera de sus limites
