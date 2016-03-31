@@ -19,7 +19,7 @@ leer_columna(X, M):- repeat,
 jugando(Tablero, Tablero_oculto, N, M):-
     nl, write('Asi queda su tablero:'), nl,
     imprime_tablero(Tablero, N),
-%   imprime_tablero(Tablero_oculto, N),
+    %   imprime_tablero(Tablero_oculto, N),
     repeat,
     nl, write('Elija una posicion del tablero. Recuerde escribir un punto tras cada numero.'), nl,
     leer_columna(X, M),
@@ -27,8 +27,8 @@ jugando(Tablero, Tablero_oculto, N, M):-
     comprueba(Tablero, Tablero_oculto, X, Y, N),
     !,
     modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1),
-    jugando(T1, Tablero_oculto, N, M).
-
+    imprime_tablero(T1, N),
+    jugando(T2, Tablero_oculto, N, M).
 
 comprueba(Tablero, Tablero_oculto, X, Y, N):-
     Posicion is X + Y * N,
@@ -73,14 +73,7 @@ modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1):-
     cambiarAlrededor(Tx0, Tablero_oculto, X + 1, Y + 1, N, M, Tx1),
     cambiarAlrededor(Tx1, Tablero_oculto, X, Y - 1, N, M, Tx2),
     cambiarAlrededor(Tx2, Tablero_oculto, X - 1, Y + 1, N, M, Tx3),
-    cambiarAlrededor(Tx3, Tablero_oculto, X +1, Y - 1, N, M, Tx4),
+    cambiarAlrededor(Tx3, Tablero_oculto, X + 1, Y - 1, N, M, Tx4),
     cambiarAlrededor(Tx4, Tablero_oculto, X - 1, Y, N, M, Tx5),
     cambiarAlrededor(Tx5, Tablero_oculto, X + 1, Y, N, M, Tx6),
-    cambiarAlrededor(Tx6, Tablero_oculto, X - 1, Y - 1, N, M, Tx7),
-    limpia_ceros(Tx7, T1).
-
-limpia_ceros([],_).
-limpia_ceros([0|T], [' '|T1]):-
-    limpia_ceros(T, T1).
-limpia_ceros([H|T], [H|T1]):-
-    limpia_ceros(T, T1).
+    cambiarAlrededor(Tx6, Tablero_oculto, X - 1, Y - 1, N, M, T1).
