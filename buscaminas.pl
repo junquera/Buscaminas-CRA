@@ -36,4 +36,4 @@ jugar:-
     leer_bombas(N1, R), nl,
     generar_tablero_jugador(N, M, Tablero),
     generar_tablero_oculto(N, M, R, Tablero_oculto),
-    jugando(Tablero, Tablero_oculto, N, M).
+    jugando(Tablero, Tablero_oculto, R, N, M).

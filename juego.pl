@@ -16,10 +16,10 @@ leer_columna(X, M):- repeat,
                     X < M,
                     !.
 
-jugando(Tablero, Tablero_oculto, N, M):-
+jugando(Tablero, Tablero_oculto, R, N, M):-
     nl, write('Asi queda su tablero:'), nl,
     imprime_tablero(Tablero, N),
-    %   imprime_tablero(Tablero_oculto, N),
+    he_ganado(Tablero, R),
     repeat,
     nl, write('Elija una posicion del tablero. Recuerde escribir un punto tras cada numero.'), nl,
     leer_columna(X, M),
@@ -27,8 +27,21 @@ jugando(Tablero, Tablero_oculto, N, M):-
     comprueba(Tablero, Tablero_oculto, X, Y, N),
     !,
     modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1),
-    imprime_tablero(T1, N),
-    jugando(T2, Tablero_oculto, N, M).
+    jugando(T1, Tablero_oculto, R, N, M).
+
+he_ganado(T, R):-
+    cuenta_X(T, NX),
+    NX \= R.
+he_ganado(_, _):- !,
+    write('Has ganado!'),
+    halt.
+
+cuenta_X([], 0).
+cuenta_X(['X'|T], B):-
+    cuenta_X(T, B1),
+    succ(B1, B).
+cuenta_X([_|T], B):-
+    cuenta_X(T, B).
 
 comprueba(Tablero, Tablero_oculto, X, Y, N):-
     Posicion is X + Y * N,
