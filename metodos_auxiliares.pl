@@ -36,8 +36,17 @@ get_posicion([_|T], X, V):-
     X1 is X - 1,
     get_posicion(T, X1, V).
 
-
-% T <- Tablero; X <- Posicion; N <- Ancho; V <- Resultado
+/* T <- Tablero; X <- Posicion; N <- Ancho; V <- Resultado
+    Comprobamos antes si las posicion dada es valida.
+        Si se va del tablero por la derecha
+            X + 1 mod N < X mod n
+        Si se va por la izquierda
+            X - 1 mod N > X mod n
+        Si se va por arriba
+            X - N < 0
+        Si se va por abado
+            X + N > D [N * M]
+*/
 get_norte(T, X, N, V):-
     X1 is X - N,
     X1 > 0,

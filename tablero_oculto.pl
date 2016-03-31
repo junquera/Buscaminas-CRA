@@ -5,6 +5,10 @@ generar_tablero_oculto(N, M, B, Tablero_oculto):-
     set_bombs(Tablero, D, B, Tablero_bombas),
     set_bomb_advert(Tablero_bombas, N, D, Tablero_oculto).
 
+/*
+    Pone los numeros que avisan de una bomba cercana sumando
+    el numero de bombas vecinas con el metodo get_vecinos
+*/
 set_bomb_advert(T, N, D, T1):-
     set_bomb_advert_aux(T, T, 0, N, D, T1).
 set_bomb_advert_aux([],_,_,_,_,[]).
@@ -17,6 +21,12 @@ vecinos_bomba(T, X, N, D, V):-
     get_vecinos(T, X, N, D, R),
     cuenta_bombas(R, V).
 
+/*
+    Coloca las bombas de forma aleatoria.
+    Si hay menos bombas de las que se indica, el metodo se
+    repite recursivamente. Asi, podemos verificar que no se pone
+    una bomba encima de otra.
+*/
 set_bombs(T, D, B, TB):-
     set_bombs_aux(T, D, B, 0, TB).
 set_bombs_aux(T, _, B, B, T).

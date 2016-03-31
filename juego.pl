@@ -15,7 +15,7 @@ leer_columna(X, M):- repeat,
                     X >= 0,
                     X < M,
                     !.
-
+% Método para jugar: R <- Numero de bombas
 jugando(Tablero, Tablero_oculto, R, N, M):-
     nl, write('Asi queda su tablero:'), nl,
     imprime_tablero(Tablero, N),
@@ -30,8 +30,9 @@ jugando(Tablero, Tablero_oculto, R, N, M):-
     jugando(T1, Tablero_oculto, R, N, M).
 
 he_ganado(T, R):-
-    cuenta_X(T, NX),
-    NX \= R.
+    % N <- Numero de X en el tablero
+    cuenta_X(T, N),
+    N > R.
 he_ganado(_, _):- !,
     write('Has ganado!'),
     halt.
@@ -43,6 +44,7 @@ cuenta_X(['X'|T], B):-
 cuenta_X([_|T], B):-
     cuenta_X(T, B).
 
+% Comprobamos si la casilla ya ha sido seleccionada o es una bomba
 comprueba(Tablero, Tablero_oculto, X, Y, N):-
     Posicion is X + Y * N,
     get_posicion(Tablero, Posicion, Valor),
@@ -50,21 +52,28 @@ comprueba(Tablero, Tablero_oculto, X, Y, N):-
     comprueba_valor(Valor),
     comprueba_valor_oculto(Valor_oculto).
 
+% Vemos si es un valor repetido, si lo es, hacemos backtracking
 comprueba_valor('X').
 comprueba_valor(_):-
     write('Valor repetido'),
     false.
 
+% Comprobamos si es una bomba, si lo es, avisamos y termina el juego
 comprueba_valor_oculto('#'):-
     write('Bomba!'), nl,
     halt.
 comprueba_valor_oculto(_).
 
+/*
+    Dependiendo de si el elemento es 0 u otro, muestra recursivamente a las casillas adyacentes o no.
+*/
 set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, 0, T1):-
     set_posicion(Tablero, Indice, ' ', T0),
     modificar_posicion_recursiva(T0, Tablero_oculto, X, Y, N, M, T1).
 set_cambio(Tablero, _, _, _, _, _, Indice, Elemento, T1):-
     set_posicion(Tablero, Indice, Elemento, T1).
+
+% Mostrar las posiciones que rodean la casilla en función de su contenido en el tablero oculto
 cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, T1):-
     X >=0,
     X < N,
@@ -80,6 +89,7 @@ cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, T1):-
     set_cambio(Tablero, Tablero_oculto, X, Y, N, M, Indice, Elemento, T1).
 cambiarAlrededor(T, _, _, _, _, _, T):-!.
 
+% Metodo auxiliar para cambiarAlrededor
 modificar_posicion_recursiva(Tablero, Tablero_oculto, X, Y, N, M, T1):-
     cambiarAlrededor(Tablero, Tablero_oculto, X, Y, N, M, Tx),
     cambiarAlrededor(Tx, Tablero_oculto, X, Y + 1, N, M, Tx0),
